@@ -1,0 +1,5 @@
+#!/bin/bash
+
+export ANDROID_HOME="/Users/<INSERT_YOUR_USER_HERE>/Library/Android/sdk"
+
+export PATH="$ANDROID_HOME/platform-tools:/bin:/usr/bin:/usr/local/bin:$PATH"

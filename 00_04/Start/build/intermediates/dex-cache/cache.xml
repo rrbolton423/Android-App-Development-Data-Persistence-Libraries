@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="/Users/annycedavis/Desktop/Exercise Files/00_04/Start/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="47cfc1a22d1877bc6bb38f2ace3773451c14e828">
+        <dex dex="/Users/annycedavis/Desktop/Exercise Files/00_04/Start/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_129d0c2bba751ae8243c397ed0b32c871f858d49/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/annycedavis/Desktop/Exercise Files/00_04/Start/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c82741bc129dd5f99f11a4ab8666ae24262053b6">
+        <dex dex="/Users/annycedavis/Desktop/Exercise Files/00_04/Start/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_472f621dba30479cbc69cc8b5d562a58dda87ce6/classes.dex" />
+    </item>
+
+</items>

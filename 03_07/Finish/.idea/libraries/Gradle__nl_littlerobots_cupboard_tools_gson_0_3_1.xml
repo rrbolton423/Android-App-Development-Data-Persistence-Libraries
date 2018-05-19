@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: nl.littlerobots.cupboard-tools:gson-0.3.1">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.android/build-cache/3a5d64eef74f66d01dcada091f346022db1b7bd2/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/3a5d64eef74f66d01dcada091f346022db1b7bd2/output/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/nl.littlerobots.cupboard-tools/gson/0.3.1/9aeab299ee64a7996c833a4c4cf6d7e2e0e81217/gson-0.3.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
