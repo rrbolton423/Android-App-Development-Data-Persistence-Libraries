@@ -7,7 +7,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import info.adavis.topsy.turvey.R;
+import info.adavis.topsy.turvey.db.RecipesDataProvider;
 import info.adavis.topsy.turvey.db.TopsyTurveyDataSource;
+import info.adavis.topsy.turvey.models.Recipe;
 
 public class RecipesActivity extends AppCompatActivity
 {
@@ -15,6 +17,7 @@ public class RecipesActivity extends AppCompatActivity
 
     private RecyclerView recipesRecyclerView;
     private TopsyTurveyDataSource dataSource;
+    private RecipesAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -27,33 +30,42 @@ public class RecipesActivity extends AppCompatActivity
 
         recipesRecyclerView = (RecyclerView) findViewById(R.id.recipes_recycler_view);
 
-        dataSource = new TopsyTurveyDataSource();
-        dataSource.open();
+        dataSource = new TopsyTurveyDataSource(this);
 
         setupRecyclerView();
     }
 
     @Override
-    protected void onResume()
+    protected void onResume ()
     {
         super.onResume();
+
+        dataSource.open();
+
+        for (Recipe recipe : RecipesDataProvider.recipesList)
+        {
+            dataSource.createRecipe(recipe);
+        }
     }
 
     @Override
-    protected void onDestroy()
+    protected void onPause ()
     {
         dataSource.close();
 
-        super.onDestroy();
+        super.onPause();
     }
 
-    private void setupRecyclerView()
+    private void setupRecyclerView ()
     {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recipesRecyclerView.setLayoutManager(layoutManager);
 
         recipesRecyclerView.setHasFixedSize(true);
+
+        adapter = new RecipesAdapter( this );
+        recipesRecyclerView.setAdapter( adapter );
     }
 
 }

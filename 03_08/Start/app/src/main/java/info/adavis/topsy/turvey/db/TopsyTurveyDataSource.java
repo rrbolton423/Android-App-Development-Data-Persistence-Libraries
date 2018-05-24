@@ -1,77 +1,58 @@
 package info.adavis.topsy.turvey.db;
 
 import android.content.Context;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.util.List;
 
 import info.adavis.topsy.turvey.models.Recipe;
-
-import static nl.qbusict.cupboard.CupboardFactory.cupboard;
+import info.adavis.topsy.turvey.models.RecipeStep;
 
 public class TopsyTurveyDataSource
 {
     private static final String TAG = TopsyTurveyDataSource.class.getSimpleName();
-
-    private SQLiteDatabase database;
-    private DatabaseSQLiteHelper dbHelper;
+    private final RecipeDao recipeDao;
+    private final RecipeStepDao recipeStepDao;
 
     public TopsyTurveyDataSource (Context context)
     {
-        this.dbHelper = new DatabaseSQLiteHelper(context);
-    }
-
-    public void open() throws SQLException
-    {
-        this.database = dbHelper.getWritableDatabase();
-
-        Log.d( TAG, "open: database opened" );
-    }
-
-    public void close()
-    {
-        dbHelper.close();
-
-        Log.d( TAG, "close: database closed" );
+        TopsyTurveyDatabase database = TopsyTurveyDatabase.getInstance(context);
+        recipeDao = database.recipeDao();
+        recipeStepDao = database.recipeStepDao();
     }
 
     public void createRecipe (Recipe recipe)
     {
-        // Insert the recipe into the database using cupboard
-        long rowId = cupboard().withDatabase(database).put(recipe);
+        long rowId = recipeDao.createRecipe(recipe);
+        List<RecipeStep> steps = recipe.getSteps();
+        if (steps != null) {
+            for (RecipeStep step : steps) {
+                step.setRecipeId(rowId);
+            }
 
-        Log.d( TAG, "createRecipe: the id: " + rowId );
+            recipeStepDao.insertAll(steps);
+        }
+
+        Log.d(TAG, "createRecipe: the id: " + rowId);
     }
 
     public List<Recipe> getAllRecipes ()
     {
-        // Return all the recipes from the database
-        return cupboard().withDatabase(database)
-                .query(Recipe.class) // Specify the table to query
-                .list(); // Return the query as a list
-    }
 
-    public void updateRecipe(Recipe recipe) {
+        // Get a list of all recipes
+        List<Recipe> recipes = recipeDao.getAllRecipes();
 
-        // Put the modified recipe into the database
-        // If an entity already exists in the database with
-        // the same _id, it will be replaced / updated
-        cupboard().withDatabase(database).put(recipe);
-    }
+        // Loop through all of the Recipes
+        for (Recipe recipe : recipes) {
 
-    public void deleteRecipe(Recipe recipe) {
+            // Get the steps of each Recipe
+            List<RecipeStep> steps = recipeStepDao.getAllRecipeStepsByRecipeId(recipe.getId());
 
-        // Delete the recipe / entity in the database
-        // by its given _id
-        cupboard().withDatabase(database).delete(recipe);
-    }
+            // Update each Recipe object
+            recipe.setSteps(steps);
+        }
 
-    public void deleteAllRecipes() {
-
-        // Delete all records in the database
-        // by passing the class literal, and no selection
-        cupboard().withDatabase(database).delete(Recipe.class, null);
+        // Return the list of Recipes
+        return recipes;
     }
 }

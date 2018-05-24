@@ -1,53 +1,52 @@
 package info.adavis.topsy.turvey.db;
 
+import android.content.Context;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.util.List;
+
 import info.adavis.topsy.turvey.models.Recipe;
-import io.realm.Realm;
+
+import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 public class TopsyTurveyDataSource
 {
     private static final String TAG = TopsyTurveyDataSource.class.getSimpleName();
 
-    // Declare Realm instance
-    private Realm realm;
+    private SQLiteDatabase database;
+    private DatabaseSQLiteHelper dbHelper;
 
-    public void open()
+    public TopsyTurveyDataSource (Context context)
     {
+        this.dbHelper = new DatabaseSQLiteHelper(context);
+    }
 
-        // Get an instance of Realm
-        realm = Realm.getDefaultInstance();
+    public void open() throws SQLException
+    {
+        this.database = dbHelper.getWritableDatabase();
 
-        // Log open message
         Log.d( TAG, "open: database opened" );
     }
 
     public void close()
     {
+        dbHelper.close();
 
-        // Close the Realm instance
-        realm.close();
-
-        // Log close message
         Log.d( TAG, "close: database closed" );
     }
 
-    public void createRecipe (final Recipe recipe)
+    public void createRecipe (Recipe recipe)
     {
+        // Insert the recipe into the database using cupboard
+        long rowId = cupboard().withDatabase(database).put(recipe);
 
-        // Execute a Realm transaction
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-
-                // Call the realm's insert() method and add the
-                // recipe to the database
-                realm.insert(recipe);
-            }
-        });
-
-        // Log id
-        Log.d(TAG, "createRecipe: the id: " + recipe.getId());
+        Log.d( TAG, "createRecipe: the id: " + rowId );
     }
 
+    public List<Recipe> getAllRecipes ()
+    {
+        return null;
+    }
 }

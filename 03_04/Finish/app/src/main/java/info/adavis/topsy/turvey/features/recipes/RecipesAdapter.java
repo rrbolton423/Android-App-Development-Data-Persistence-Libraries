@@ -39,7 +39,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
 
         public ViewHolder (View v)
         {
-            super( v );
+            super(v);
 
             recipeImage = (ImageView) v.findViewById(R.id.recipe_image);
             recipeName = (TextView) v.findViewById(R.id.recipe_name);
@@ -58,7 +58,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
     @Override
     public void onBindViewHolder (ViewHolder holder, int position)
     {
-        Recipe recipe = recipes.get( position );
+        Recipe recipe = recipes.get(position);
 
         holder.recipeName.setText(recipe.getName());
         holder.recipeDescription.setText(recipe.getDescription());

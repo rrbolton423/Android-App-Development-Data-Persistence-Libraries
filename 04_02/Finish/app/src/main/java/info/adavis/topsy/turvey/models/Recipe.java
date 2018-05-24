@@ -1,8 +1,12 @@
 package info.adavis.topsy.turvey.models;
 
+import java.util.List;
+
+import nl.qbusict.cupboard.annotation.Ignore;
+
 public class Recipe
 {
-    private String id;
+    private Long _id;
 
     private String name;
 
@@ -10,25 +14,28 @@ public class Recipe
 
     private int imageResourceId;
 
-    public Recipe()
+    @Ignore
+    private List<RecipeStep> steps;
+
+    public Recipe ()
     {
     }
 
-    public Recipe(String name, String description, int imageResourceId)
+    public Recipe (String name, String description, int imageResourceId)
     {
         this.name = name;
         this.description = description;
         this.imageResourceId = imageResourceId;
     }
 
-    public String getId()
+    public long getId()
     {
-        return id;
+        return _id;
     }
 
-    public void setId(String id)
+    public void setId(long id)
     {
-        this.id = id;
+        this._id = id;
     }
 
     public String getName()
@@ -61,11 +68,21 @@ public class Recipe
         this.imageResourceId = imageResourceId;
     }
 
+    public List<RecipeStep> getSteps ()
+    {
+        return steps;
+    }
+
+    public void setSteps (List<RecipeStep> steps)
+    {
+        this.steps = steps;
+    }
+
     @Override
-    public String toString()
+    public String toString ()
     {
         return "Recipe{" +
-                "id='" + id + '\'' +
+                "_id=" + _id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", imageResourceId=" + imageResourceId +

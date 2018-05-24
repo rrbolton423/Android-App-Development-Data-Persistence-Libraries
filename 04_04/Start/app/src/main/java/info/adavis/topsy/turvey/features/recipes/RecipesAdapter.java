@@ -51,7 +51,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
     public ViewHolder onCreateViewHolder (ViewGroup parent, int viewType)
     {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recipe_item, parent, false);
+                               .inflate(R.layout.recipe_item, parent, false);
         return new ViewHolder(v);
     }
 
@@ -64,10 +64,10 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
         holder.recipeDescription.setText(recipe.getDescription());
 
         Picasso.with(context)
-                .load(recipe.getImageResourceId())
-                .resize(340, 200)
-                .centerCrop()
-                .into(holder.recipeImage);
+               .load(recipe.getImageResourceId())
+               .resize(340, 200)
+               .centerCrop()
+               .into(holder.recipeImage);
     }
 
     @Override

@@ -1,13 +1,11 @@
 package info.adavis.topsy.turvey.db;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import info.adavis.topsy.turvey.R;
 import info.adavis.topsy.turvey.models.Recipe;
 import info.adavis.topsy.turvey.models.RecipeStep;
-import io.realm.RealmList;
 
 public class RecipesDataProvider
 {
@@ -30,18 +28,6 @@ public class RecipesDataProvider
 
     private static void addRecipe(Recipe recipe, RecipeStep... steps)
     {
-
-        // Check if the steps are provided with this recipe
-        if (steps.length > 0) {
-
-            // Create a RealmList
-            recipe.setSteps(new RealmList<RecipeStep>());
-
-            // Populate the list with our steps
-            recipe.getSteps().addAll(Arrays.asList(steps));
-        }
-
-        // Add the Recipe to our list
         recipesList.add(recipe);
     }
 }

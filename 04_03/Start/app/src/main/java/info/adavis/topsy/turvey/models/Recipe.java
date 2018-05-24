@@ -1,20 +1,14 @@
 package info.adavis.topsy.turvey.models;
 
-import java.util.UUID;
+import java.util.List;
 
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
+import nl.qbusict.cupboard.annotation.Ignore;
 
-// Have entity class extend "RealObject"
-public class Recipe extends RealmObject
+public class Recipe
 {
-    // Define our primary key using Realm's @PrimaryKey annotation
-    // By doing this, Real will automatically create an index on this column
-    // and ensure it's contents are unique.
-    // By assigning the field to "UUID.randomUUID().toString()", we ensure
-    // that we always have a unique String
-    @PrimaryKey
-    private String id = UUID.randomUUID().toString();
+    // Change _id field type to "Long" and reference
+    // name to be "_id"
+    private Long _id;
 
     private String name;
 
@@ -22,25 +16,31 @@ public class Recipe extends RealmObject
 
     private int imageResourceId;
 
-    public Recipe()
+    // Use @Ignore annotation to prevent cupboard from processing
+    // the recipe steps field/ Support for list fields are not available
+    // out of the box for cupboard
+    @Ignore
+    private List<RecipeStep> steps;
+
+    public Recipe ()
     {
     }
 
-    public Recipe(String name, String description, int imageResourceId)
+    public Recipe (String name, String description, int imageResourceId)
     {
         this.name = name;
         this.description = description;
         this.imageResourceId = imageResourceId;
     }
 
-    public String getId()
+    public long get_id()
     {
-        return id;
+        return _id;
     }
 
-    public void setId(String id)
+    public void set_id(long _id)
     {
-        this.id = id;
+        this._id = _id;
     }
 
     public String getName()
@@ -73,11 +73,21 @@ public class Recipe extends RealmObject
         this.imageResourceId = imageResourceId;
     }
 
+    public List<RecipeStep> getSteps ()
+    {
+        return steps;
+    }
+
+    public void setSteps (List<RecipeStep> steps)
+    {
+        this.steps = steps;
+    }
+
     @Override
-    public String toString()
+    public String toString ()
     {
         return "Recipe{" +
-                "id='" + id + '\'' +
+                "_id=" + _id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", imageResourceId=" + imageResourceId +

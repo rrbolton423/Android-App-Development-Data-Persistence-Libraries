@@ -1,10 +1,14 @@
 package info.adavis.topsy.turvey.features.recipes;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import info.adavis.topsy.turvey.R;
 import info.adavis.topsy.turvey.db.RecipesDataProvider;
@@ -40,27 +44,32 @@ public class RecipesActivity extends AppCompatActivity
     {
         super.onResume();
 
-        dataSource.open();
+        // Create a new AsyncTask
+        new AsyncTask<Void, Void, List<Recipe>>() {
+            @Override
+            protected List<Recipe> doInBackground(Void... voids) {
 
-        // Loop through the list of recipes in the list
-        for (Recipe recipe : RecipesDataProvider.recipesList) {
+                // Loop through the list of Recipes...
+                for (Recipe recipe : RecipesDataProvider.recipesList)
+                {
+                    // Add the Recipe to the database
+                    dataSource.createRecipe(recipe);
+                }
 
-            // Add eah recipe into the database
-            dataSource.createRecipe(recipe);
-        }
+                // Return an empty list of Recipes if we don't have
+                // anything in our RecipeList
+                return new ArrayList<>();
+            }
 
-        // Get all of the recipes in the form of a list,
-        // and pass them to the RecyclerView's adapter for display
-        adapter.setRecipes(dataSource.getAllRecipes());
+            @Override
+            protected void onPostExecute(List<Recipe> recipes) {
+                super.onPostExecute(recipes);
+            }
+        }.execute(); // Execute the task
 
-    }
-
-    @Override
-    protected void onPause ()
-    {
-        dataSource.close();
-
-        super.onPause();
+//        List<Recipe> recipes = dataSource.getAllRecipes();
+//        adapter.setRecipes(recipes);
+//        adapter.notifyDataSetChanged();
     }
 
     private void setupRecyclerView ()
@@ -71,8 +80,8 @@ public class RecipesActivity extends AppCompatActivity
 
         recipesRecyclerView.setHasFixedSize(true);
 
-        adapter = new RecipesAdapter( this );
-        recipesRecyclerView.setAdapter( adapter );
+        adapter = new RecipesAdapter(this);
+        recipesRecyclerView.setAdapter(adapter);
     }
 
 }

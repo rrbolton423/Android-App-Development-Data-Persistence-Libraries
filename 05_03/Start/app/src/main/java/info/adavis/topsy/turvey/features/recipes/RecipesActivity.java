@@ -5,14 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-
-import java.util.List;
 
 import info.adavis.topsy.turvey.R;
-import info.adavis.topsy.turvey.db.RecipesDataProvider;
 import info.adavis.topsy.turvey.db.TopsyTurveyDataSource;
-import info.adavis.topsy.turvey.models.Recipe;
 
 public class RecipesActivity extends AppCompatActivity
 {
@@ -42,24 +37,6 @@ public class RecipesActivity extends AppCompatActivity
     protected void onResume()
     {
         super.onResume();
-
-        // Grab the list of recipes
-        for (Recipe recipe : RecipesDataProvider.recipesList) {
-
-            // Add each Recipe in the list into the database
-            dataSource.createRecipe(recipe);
-        }
-
-        // Get the list of recipes from the Realm query
-        List<Recipe> allRecipes = dataSource.getAllRecipes();
-
-        // Loop through the list of recipes
-        for (Recipe recipe : allRecipes)
-        {
-
-            // Print each Recipe out
-            Log.i(TAG, "recipe: " + recipe);
-        }
     }
 
     @Override

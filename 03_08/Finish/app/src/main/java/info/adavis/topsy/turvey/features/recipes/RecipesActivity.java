@@ -1,12 +1,13 @@
 package info.adavis.topsy.turvey.features.recipes;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import info.adavis.topsy.turvey.R;
@@ -43,38 +44,25 @@ public class RecipesActivity extends AppCompatActivity
     {
         super.onResume();
 
-        dataSource.open();
+        new AsyncTask<Void, Void, List<Recipe>>() {
 
-        for (Recipe recipe : RecipesDataProvider.recipesList)
-        {
-            dataSource.createRecipe(recipe);
-        }
+            @Override
+            protected List<Recipe> doInBackground(Void... voids) {
+                for (Recipe recipe : RecipesDataProvider.recipesList)
+                {
+                    dataSource.createRecipe(recipe);
+                }
 
-        List<Recipe> allRecipes = getRecipes();
+                return dataSource.getAllRecipes();
+            }
 
-        dataSource.deleteAllRecipes();
+            @Override
+            protected void onPostExecute(List<Recipe> recipes) {
+                adapter.setRecipes(recipes);
+                adapter.notifyDataSetChanged();
+            }
+        }.execute();
 
-        getRecipes();
-    }
-
-    public List<Recipe> getRecipes()
-    {
-        List<Recipe> allRecipes = dataSource.getAllRecipes();
-        for (Recipe recipe : allRecipes)
-        {
-            Log.i(TAG, "recipe: " + recipe);
-        }
-        adapter.setRecipes(allRecipes);
-
-        return allRecipes;
-    }
-
-    @Override
-    protected void onPause ()
-    {
-        dataSource.close();
-
-        super.onPause();
     }
 
     private void setupRecyclerView ()
@@ -85,8 +73,8 @@ public class RecipesActivity extends AppCompatActivity
 
         recipesRecyclerView.setHasFixedSize(true);
 
-        adapter = new RecipesAdapter( this );
-        recipesRecyclerView.setAdapter( adapter );
+        adapter = new RecipesAdapter(this);
+        recipesRecyclerView.setAdapter(adapter);
     }
 
 }

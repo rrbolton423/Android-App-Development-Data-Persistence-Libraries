@@ -1,8 +1,15 @@
 package info.adavis.topsy.turvey.models;
 
+import java.util.List;
+
+import nl.qbusict.cupboard.annotation.Ignore;
+
 public class Recipe
 {
-    private String id;
+
+    // Change _id field type to "Long" and reference
+    // name to be "_id"
+    private Long _id;
 
     private String name;
 
@@ -10,25 +17,31 @@ public class Recipe
 
     private int imageResourceId;
 
-    public Recipe()
+    // Use @Ignore annotation to prevent cupboard from processing
+    // the recipe steps field/ Support for list fields are not available
+    // out of the box for cupboard
+    @Ignore
+    private List<RecipeStep> steps;
+
+    public Recipe ()
     {
     }
 
-    public Recipe(String name, String description, int imageResourceId)
+    public Recipe (String name, String description, int imageResourceId)
     {
         this.name = name;
         this.description = description;
         this.imageResourceId = imageResourceId;
     }
 
-    public String getId()
+    public long get_id()
     {
-        return id;
+        return _id;
     }
 
-    public void setId(String id)
+    public void set_id(long _id)
     {
-        this.id = id;
+        this._id = _id;
     }
 
     public String getName()
@@ -61,11 +74,21 @@ public class Recipe
         this.imageResourceId = imageResourceId;
     }
 
+    public List<RecipeStep> getSteps ()
+    {
+        return steps;
+    }
+
+    public void setSteps (List<RecipeStep> steps)
+    {
+        this.steps = steps;
+    }
+
     @Override
-    public String toString()
+    public String toString ()
     {
         return "Recipe{" +
-                "id='" + id + '\'' +
+                "_id=" + _id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", imageResourceId=" + imageResourceId +

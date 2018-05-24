@@ -1,11 +1,11 @@
 package info.adavis.topsy.turvey.features.recipes;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 
 import java.util.List;
 
@@ -43,50 +43,31 @@ public class RecipesActivity extends AppCompatActivity
     {
         super.onResume();
 
-        dataSource.open();
+        new AsyncTask<Void, Void, List<Recipe>>() {
 
-        // Loop through the list of recipes in the list
-        for (Recipe recipe : RecipesDataProvider.recipesList) {
+            @Override
+            protected List<Recipe> doInBackground(Void... voids) {
+                for (Recipe recipe : RecipesDataProvider.recipesList)
+                {
+                    dataSource.createRecipe(recipe);
+                }
 
-            // Add eah recipe into the database
-            dataSource.createRecipe(recipe);
-        }
+                // Return the list of Recipes to onPostExecute()
+                return dataSource.getAllRecipes();
+            }
 
-        // Get the list of recipes
-        List<Recipe> allRecipes = getRecipes();
+            // Receive the list of Recipes
+            @Override
+            protected void onPostExecute(List<Recipe> recipes) {
 
-        // Get the first recipe in the list
-        Recipe updatedRecipe = allRecipes.get(0);
+                // Set the Recipes on the Adapter
+                adapter.setRecipes(recipes);
 
-//        Delete the recipe in the database
-//        dataSource.deleteRecipe(updatedRecipe);
+                // Notify the adapter of change in the data
+                adapter.notifyDataSetChanged();
+            }
+        }.execute();
 
-        // Delete all recipes in the database
-        dataSource.deleteAllRecipes();
-
-        // Get the list of recipes from the dataSource class,
-        // and update the display in the RecyclerView
-        getRecipes();
-    }
-
-    public List<Recipe> getRecipes()
-    {
-        List<Recipe> allRecipes = dataSource.getAllRecipes();
-        for (Recipe recipe : allRecipes)
-        {
-            Log.i(TAG, "recipe: " + recipe);
-        }
-        adapter.setRecipes(allRecipes);
-
-        return allRecipes;
-    }
-
-    @Override
-    protected void onPause ()
-    {
-        dataSource.close();
-
-        super.onPause();
     }
 
     private void setupRecyclerView ()
@@ -97,8 +78,8 @@ public class RecipesActivity extends AppCompatActivity
 
         recipesRecyclerView.setHasFixedSize(true);
 
-        adapter = new RecipesAdapter( this );
-        recipesRecyclerView.setAdapter( adapter );
+        adapter = new RecipesAdapter(this);
+        recipesRecyclerView.setAdapter(adapter);
     }
 
 }

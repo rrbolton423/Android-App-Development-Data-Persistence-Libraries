@@ -1,24 +1,25 @@
 package info.adavis.topsy.turvey.models;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+
 import java.util.List;
 
-import nl.qbusict.cupboard.annotation.Ignore;
-
+@Entity
 public class Recipe
 {
-    // Change _id field type to "Long" and reference
-    // name to be "_id"
-    private Long _id;
+    @PrimaryKey(autoGenerate = true)
+    private long id;
 
     private String name;
 
     private String description;
 
+    @ColumnInfo(name = "image_resource_id")
     private int imageResourceId;
 
-    // Use @Ignore annotation to prevent cupboard from processing
-    // the recipe steps field/ Support for list fields are not available
-    // out of the box for cupboard
     @Ignore
     private List<RecipeStep> steps;
 
@@ -33,14 +34,14 @@ public class Recipe
         this.imageResourceId = imageResourceId;
     }
 
-    public long get_id()
+    public long getId ()
     {
-        return _id;
+        return id;
     }
 
-    public void set_id(long _id)
+    public void setId(long id)
     {
-        this._id = _id;
+        this.id = id;
     }
 
     public String getName()
@@ -73,12 +74,12 @@ public class Recipe
         this.imageResourceId = imageResourceId;
     }
 
-    public List<RecipeStep> getSteps ()
+    public List<RecipeStep> getSteps()
     {
         return steps;
     }
 
-    public void setSteps (List<RecipeStep> steps)
+    public void setSteps(List<RecipeStep> steps)
     {
         this.steps = steps;
     }
@@ -87,10 +88,11 @@ public class Recipe
     public String toString ()
     {
         return "Recipe{" +
-                "_id=" + _id +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", imageResourceId=" + imageResourceId +
+                ", steps=" + steps +
                 '}';
     }
 }

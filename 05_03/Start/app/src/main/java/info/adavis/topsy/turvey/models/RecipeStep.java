@@ -1,20 +1,8 @@
 package info.adavis.topsy.turvey.models;
 
-import java.util.UUID;
-
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
-
-// Make RecipeStep class extend RealmObject
-public class RecipeStep extends RealmObject
+public class RecipeStep
 {
-    // Define our primary key using Realm's @PrimaryKey annotation
-    // By doing this, Real will automatically create an index on this column
-    // and ensure it's contents are unique.
-    // By assigning the field to "UUID.randomUUID().toString()", we ensure
-    // that we always have a unique String
-    @PrimaryKey
-    private String id = UUID.randomUUID().toString();
+    private String id;
 
     private int stepNumber;
 

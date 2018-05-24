@@ -6,6 +6,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
+import java.util.List;
+
 import info.adavis.topsy.turvey.R;
 import info.adavis.topsy.turvey.db.RecipesDataProvider;
 import info.adavis.topsy.turvey.db.TopsyTurveyDataSource;
@@ -40,22 +42,14 @@ public class RecipesActivity extends AppCompatActivity
     {
         super.onResume();
 
-        dataSource.open();
-
-        // Loop through the list of recipes in the list
-        for (Recipe recipe : RecipesDataProvider.recipesList) {
-
-            // Add eah recipe into the database
+        for (Recipe recipe : RecipesDataProvider.recipesList)
+        {
             dataSource.createRecipe(recipe);
         }
-    }
 
-    @Override
-    protected void onPause ()
-    {
-        dataSource.close();
-
-        super.onPause();
+        List<Recipe> recipes = dataSource.getAllRecipes();
+        adapter.setRecipes(recipes);
+        adapter.notifyDataSetChanged();
     }
 
     private void setupRecyclerView ()
@@ -66,8 +60,8 @@ public class RecipesActivity extends AppCompatActivity
 
         recipesRecyclerView.setHasFixedSize(true);
 
-        adapter = new RecipesAdapter( this );
-        recipesRecyclerView.setAdapter( adapter );
+        adapter = new RecipesAdapter(this);
+        recipesRecyclerView.setAdapter(adapter);
     }
 
 }

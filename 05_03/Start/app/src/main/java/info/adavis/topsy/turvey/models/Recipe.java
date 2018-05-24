@@ -2,7 +2,6 @@ package info.adavis.topsy.turvey.models;
 
 import java.util.UUID;
 
-import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -22,19 +21,6 @@ public class Recipe extends RealmObject
     private String description;
 
     private int imageResourceId;
-
-    // Include a RealmList of RecipeStep(s)
-    private RealmList<RecipeStep> steps;
-
-    // Create getter for the RecipeSteps
-    public RealmList<RecipeStep> getSteps() {
-        return steps;
-    }
-
-    // Create setter for the RecipeSteps
-    public void setSteps(RealmList<RecipeStep> steps) {
-        this.steps = steps;
-    }
 
     public Recipe()
     {

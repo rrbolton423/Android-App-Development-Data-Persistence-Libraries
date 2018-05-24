@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "info.adavis.topsy.turvey"
         minSdkVersion 19
-        targetSdkVersion 27
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -21,17 +21,28 @@ android {
 }
 
 ext {
-    supportLibVersion = "27.1.1"
+    supportLibVersion = "25.2.0"
+    archComponentsVersion = "1.0.0"
 }
 
 dependencies {
-    implementation "com.android.support:appcompat-v7:$supportLibVersion"
-    implementation "com.android.support:design:$supportLibVersion"
-    implementation "com.android.support:cardview-v7:$supportLibVersion"
+    compile "com.android.support:appcompat-v7:$supportLibVersion"
+    compile "com.android.support:design:$supportLibVersion"
+    compile "com.android.support:cardview-v7:$supportLibVersion"
 
-    implementation 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.squareup.picasso:picasso:2.5.2'
 
-    debugImplementation 'im.dino:dbinspector:3.4.1@aar'
+    compile "android.arch.persistence.room:runtime:$archComponentsVersion"
+    annotationProcessor "android.arch.persistence.room:compiler:$archComponentsVersion"
 
-    implementation 'nl.qbusict:cupboard:2.2.0'
+    debugCompile 'im.dino:dbinspector:3.4.1@aar'
+}
+
+configurations.all {
+    resolutionStrategy.eachDependency { details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support') {
+            details.useVersion '25.3.1'
+        }
+    }
 }

@@ -31,8 +31,4 @@ dependencies {
     implementation "com.android.support:cardview-v7:$supportLibVersion"
 
     implementation 'com.squareup.picasso:picasso:2.5.2'
-
-    annotationProcessor 'dk.ilios:realmfieldnameshelper:1.1.1'
-
-    implementation 'io.realm:android-adapters:2.0.0'
 }

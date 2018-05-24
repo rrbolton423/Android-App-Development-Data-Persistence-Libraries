@@ -21,10 +21,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity
-            android:name=".features.recipedetail.RecipeDetailActivity"/>
-        <activity
-            android:name=".features.addrecipe.AddRecipeActivity"/>
     </application>
 
 </manifest>
